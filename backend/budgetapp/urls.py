@@ -3,7 +3,7 @@ from rest_framework.routers import DefaultRouter
 
 from . import views
 
-app_name = 'budapp'
+app_name = 'budgetapp'
 
 # DRF Router
 router = DefaultRouter()

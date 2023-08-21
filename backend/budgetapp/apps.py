@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class BudappConfig(AppConfig):
+class BudgetappConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'budgapp'
+    name = 'budgetapp'
