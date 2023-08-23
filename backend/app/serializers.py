@@ -12,14 +12,14 @@ class CommonFieldMixin:
     )
     budget_field = serializers.HyperlinkedRelatedField(
         queryset=Budget.objects.all(),
-        view_name='budapp:budget-detail'
+        view_name='app:budget-detail'
     )
     budget_category_field = serializers.HyperlinkedRelatedField(
         queryset=BudgetCategory.objects.all(),
-        view_name='budapp:budgetcategory-detail'
+        view_name='app:budgetcategory-detail'
     )
     budgets_category_field = serializers.HyperlinkedRelatedField(
-        view_name='budapp:budgetcategory-detail',
+        view_name='app:budgetcategory-detail',
         many=True,
         read_only=True
     )
@@ -39,19 +39,19 @@ class DictSerializer(serializers.ListSerializer):
         Overriden to return a ReturnDict instead of a ReturnList.
         """
         ret = super(serializers.ListSerializer, self).data
-        return ReturnDict(ret, serializer=self)
+        return ReturnDict(ret, serializer=self) # expect a dictionary instead of a list
 
     def to_representation(self, data):
         """
         Converts the data from a list to a dictionary.
         """
-        items = super(DictSerializer, self).to_representation(data)
+        items = super(DictSerializer, self).to_representation(data) # method to get the serialized data as a list of dictionaries.
         return {item[self.dict_key]: item for item in items}
 
 
 class BudgetCategorySerializer(serializers.HyperlinkedModelSerializer, CommonFieldMixin):
     url = serializers.HyperlinkedIdentityField(
-        view_name='budapp:budgetcategory-detail')
+        view_name='app:budgetcategory-detail')
     group = serializers.CharField(source='group.name')
     budget_month = serializers.CharField(write_only=True)
     budget_year = serializers.IntegerField(write_only=True)
@@ -134,7 +134,7 @@ class BudgetCategorySerializer(serializers.HyperlinkedModelSerializer, CommonFie
 
 class TransactionSerializer(serializers.HyperlinkedModelSerializer, CommonFieldMixin):
     url = serializers.HyperlinkedIdentityField(
-        view_name='budapp:transaction-detail')
+        view_name='app:transaction-detail')
     budget_category = serializers.PrimaryKeyRelatedField(
         queryset=BudgetCategory.objects.all(),
     )
@@ -173,10 +173,10 @@ class BudgetCategoryGroupListSerializer(DictSerializer):
 
 class BudgetCategoryGroupSerializer(serializers.HyperlinkedModelSerializer, CommonFieldMixin):
     url = serializers.HyperlinkedIdentityField(
-        view_name='budapp:budgetcategorygroup-detail')
+        view_name='app:budgetcategorygroup-detail')
     budget = serializers.HyperlinkedRelatedField(
         queryset=Budget.objects.all(),
-        view_name='budapp:budget-detail'
+        view_name='app:budget-detail'
     )
     budget_categories = serializers.PrimaryKeyRelatedField(
         many=True,
@@ -190,7 +190,7 @@ class BudgetCategoryGroupSerializer(serializers.HyperlinkedModelSerializer, Comm
 
 class BudgetSerializer(serializers.HyperlinkedModelSerializer, CommonFieldMixin):
     url = serializers.HyperlinkedIdentityField(
-        view_name='budapp:budget-detail')
+        view_name='app:budget-detail')
     owner = CommonFieldMixin.owner_field
     budget_category_groups = BudgetCategoryGroupSerializer(
         many=True,
