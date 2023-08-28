@@ -150,6 +150,14 @@ class TransactionSerializer(serializers.HyperlinkedModelSerializer, CommonFieldM
         )
         validated_data['payee'] = payee
 
+    def create(self, validated_data):
+        self.get_or_create_related(validated_data)  # Call this method to handle the payee field
+        return Transaction.objects.create(**validated_data)
+
+    def update(self, instance, validated_data):
+        self.get_or_create_related(validated_data)  # Call this method to handle the payee field
+        instance.save()
+        return instance
     class Meta:
         model = Transaction
         fields = (
@@ -157,6 +165,7 @@ class TransactionSerializer(serializers.HyperlinkedModelSerializer, CommonFieldM
             'payee',
         )
         list_serializer_class = DictSerializer
+
 
 
 class PayeeSerializer(serializers.ModelSerializer):
