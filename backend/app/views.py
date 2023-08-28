@@ -9,11 +9,11 @@ from rest_framework.views import APIView
 from rest_framework.decorators import action
 from rest_framework import status
 
-from .models import Budget, BudgetCategory, BudgetCategoryGroup, Transaction
+from .models import Budget, BudgetCategory, BudgetCategoryGroup, Transaction, Payee
 from .permissions import IsOwnerOrAdmin
 from .serializers import (BudgetCategoryGroupSerializer,
                           BudgetCategorySerializer, BudgetSerializer,
-                          TransactionSerializer, UserSerializer, CopyBudgetSerializer)
+                          TransactionSerializer, PayeeSerializer, UserSerializer, CopyBudgetSerializer)
 
 
 
@@ -96,6 +96,17 @@ class TransactionViewSet(OwnershipFilterMixin, viewsets.ModelViewSet):
     def get_queryset(self):
         return Transaction.objects.filter(
             budget_category__group__budget__owner=self.request.user)
+    
+class PayeeViewSet(OwnershipFilterMixin, viewsets.ModelViewSet):
+    serializer_class = PayeeSerializer
+    permission_classes = (permissions.IsAuthenticated, IsOwnerOrAdmin)
+
+    def get_queryset(self):
+        return Payee.objects.filter(owner=self.request.user)
+
+    def perform_create(self, serializer):
+        return serializer.save(owner=self.request.user)
+
 
 
 class UserCreateView(generics.CreateAPIView):

@@ -11,6 +11,7 @@ router.register(r'budget', views.BudgetViewSet)
 router.register(r'budgetcategories', views.BudgetCategoryViewSet)
 router.register(r'budgetcategorygroups', views.BudgetCategoryGroupViewSet)
 router.register(r'transactions', views.TransactionViewSet)
+router.register(r'Payee', views.PayeeViewSet, basename='Payee')
 
 urlpatterns = [
     path('logout/', views.logout, name='logout'),
