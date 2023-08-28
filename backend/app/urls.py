@@ -15,6 +15,7 @@ router.register(r'Payee', views.PayeeViewSet, basename='Payee')
 
 urlpatterns = [
     path('logout/', views.logout, name='logout'),
+    path('login/', views.login_view, name='login'),
     path('users/', views.UserListView.as_view(), name='user-list'),
     path('users/register/',
          views.UserCreateView.as_view(),

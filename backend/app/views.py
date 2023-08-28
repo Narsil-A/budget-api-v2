@@ -1,5 +1,6 @@
 
 from django.contrib.auth.models import User
+from django.contrib.auth.views import LoginView
 from django.http import HttpResponse, JsonResponse
 from rest_framework import generics, permissions, viewsets
 from rest_framework.authtoken.models import Token
@@ -8,6 +9,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.decorators import action
 from rest_framework import status
+
 
 from .models import Budget, BudgetCategory, BudgetCategoryGroup, Transaction, Payee
 from .permissions import IsOwnerOrAdmin
@@ -181,3 +183,6 @@ def logout(request):
         expires='Wed, 21 Oct 1900 07:28:00 GMT',
         httponly=True
     )
+
+def login_view(request):
+        return LoginView.as_view()(request)
