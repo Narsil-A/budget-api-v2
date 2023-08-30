@@ -4,6 +4,7 @@ from decimal import Decimal
 from django.db import models
 from django.db.models import Sum
 from django.db.models.functions import Coalesce
+from collections import namedtuple
 
 
 class Budget(models.Model):
@@ -11,11 +12,14 @@ class Budget(models.Model):
     related_name = 'budgets'
 
     # A tuple of tuples, containing the short name and full name of each month.
+    MonthChoice = namedtuple('MonthChoice', ['short_name', 'full_name'])
     MONTH_CHOICES = (
-        ('JAN', 'January'), ('FEB', 'February'), ('MAR', 'March'),
-        ('APR', 'April'), ('MAY', 'May'), ('JUN', 'June'),
-        ('JUL', 'July'), ('AUG', 'August'), ('SEP', 'September'),
-        ('OCT', 'October'), ('NOV', 'November'), ('DEC', 'December')
+    MonthChoice('JAN', 'January'), MonthChoice('FEB', 'February'),
+    MonthChoice('MAR', 'March'), MonthChoice('APR', 'April'),
+    MonthChoice('MAY', 'May'), MonthChoice('JUN', 'June'),
+    MonthChoice('JUL', 'July'), MonthChoice('AUG', 'August'),
+    MonthChoice('SEP', 'September'), MonthChoice('OCT', 'October'),
+    MonthChoice('NOV', 'November'), MonthChoice('DEC', 'December')
     )
 
     # A dictionary, mapping the month's short name to its index in MONTH_CHOICES.
